@@ -1,0 +1,5 @@
+main: function integer () = {
+    puts("hello world");
+}
+
+@ abc /*This is a comment*/ xy123
