@@ -64,7 +64,7 @@ int addSymbol(char *name) {
 
     if (symbolCount < MAX_SYMBOLS) {
         strcpy(symbolTable[symbolCount].name, name);
-        symbolTable[symbolCount].id = 100 + symbolCount;  // مقداردهی یکتا
+        symbolTable[symbolCount].id = 100 + symbolCount;
         return symbolTable[symbolCount++].id;
     } else {
         printf("Symbol table full!\n");
@@ -232,23 +232,43 @@ void printToken(Token token) {
 
 
 int main() {
-    FILE *file = fopen("input.txt", "r");
-    if (!file) {
+    FILE *inputFile = fopen("input.txt", "r");
+    if (!inputFile) {
         printf("Error opening input file\n");
         return 1;
     }
 
-    initLexer(file);
-    Token token;
-    
-    printf("%-15s %-15s %-15s %-15s\n", "token", "token_type", "token_value", "token_loc");
-    printf("----------------------------------------------------------\n");
-    
-    while ((token = getNextToken()).type != TOKEN_EOF) {
-        printToken(token);
+    FILE *outputFile = fopen("output.txt", "w");
+    if (!outputFile) {
+        printf("Error opening output file\n");
+        fclose(inputFile);
+        return 1;
     }
 
-    fclose(file);
+    initLexer(inputFile);
+    Token token;
+
+    fprintf(outputFile, "%-15s %-15s %-15s %-15s\n", "token", "token_type", "token_value", "token_loc");
+    fprintf(outputFile, "----------------------------------------------------------\n");
+    
+    while ((token = getNextToken()).type != TOKEN_EOF) {
+        fprintf(outputFile, "%-15s %-15s %-15s %d:%d\n", 
+                token.lexeme, 
+                (token.type == TOKEN_ID) ? "ID" :
+                (token.type == TOKEN_KEYWORD) ? "KEYWORD" :
+                (token.type == TOKEN_INTEGER) ? "INTEGER" :
+                (token.type == TOKEN_STRING) ? "STRING" :
+                (token.type == TOKEN_OPERATOR) ? "OPERATOR" :
+                (token.type == TOKEN_DELIMITER) ? "DELIMITER" : "ERROR",
+                (token.type == TOKEN_ID) ? "ID_REF" : token.lexeme, // Handle token values
+                token.line_no, token.column_no);
+    }
+
+    fclose(inputFile);
+    fclose(outputFile);
+    
+    printf("Output successfully written to output.txt\n");
     return 0;
 }
+
 

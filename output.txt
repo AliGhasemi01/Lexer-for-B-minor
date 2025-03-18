@@ -1,0 +1,19 @@
+token           token_type      token_value     token_loc      
+----------------------------------------------------------
+main            ID              ID_REF          1:1
+:               DELIMITER       :               1:5
+function        KEYWORD         function        1:7
+integer         KEYWORD         integer         1:16
+(               DELIMITER       (               1:24
+)               DELIMITER       )               1:25
+=               OPERATOR        =               1:27
+{               DELIMITER       {               1:29
+puts            ID              ID_REF          2:5
+(               DELIMITER       (               2:9
+"hello world"   STRING          "hello world"   2:10
+)               DELIMITER       )               2:23
+;               DELIMITER       ;               2:24
+}               DELIMITER       }               3:1
+@               ERROR           @               5:1
+abc             ID              ID_REF          5:3
+xy123           ID              ID_REF          5:29
